@@ -1,14 +1,9 @@
 package main
 
-import "testing"
-
-type testPrinter struct {
-	stdout string
-}
-
-func (p *testPrinter) Print(s string) {
-	p.stdout += s + "\n"
-}
+import (
+	"bytes"
+	"testing"
+)
 
 func TestCheckNumber(t *testing.T) {
 	tests := []struct {
@@ -23,9 +18,9 @@ func TestCheckNumber(t *testing.T) {
 		{11, 11, "11\n"},
 	}
 	for _, tt := range tests {
-		p := &testPrinter{} // same as new(testPrinter)
-		Print(p, tt.from, tt.to)
-		if got := p.stdout; got != tt.want {
+		var b bytes.Buffer
+		Print(&b, tt.from, tt.to)
+		if got := b.String(); got != tt.want {
 			t.Errorf("Print(print, %v, %v): %q, want %q", tt.from, tt.to, got, tt.want)
 		}
 	}
