@@ -5,9 +5,13 @@ import (
 	"strconv"
 )
 
-func Print(print func(string), from, to int) {
+type printer interface {
+	Print(string)
+}
+
+func Print(p printer, from, to int) {
 	for n := from; n <= to; n++ {
-		print(fizzbuzz(n))
+		p.Print(fizzbuzz(n))
 	}
 }
 
@@ -21,8 +25,11 @@ func fizzbuzz(n int) string {
 	return strconv.Itoa(n)
 }
 
+type stdoutPrinter struct{}
+
+func (p stdoutPrinter) Print(s string) {
+	fmt.Println(s)
+}
 func main() {
-	Print(func(s string) {
-		fmt.Println(s)
-	}, 1, 100)
+	Print(stdoutPrinter{}, 1, 100)
 }

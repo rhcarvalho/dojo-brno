@@ -2,6 +2,14 @@ package main
 
 import "testing"
 
+type testPrinter struct {
+	stdout string
+}
+
+func (p *testPrinter) Print(s string) {
+	p.stdout += s + "\n"
+}
+
 func TestCheckNumber(t *testing.T) {
 	tests := []struct {
 		from, to int
@@ -15,12 +23,9 @@ func TestCheckNumber(t *testing.T) {
 		{11, 11, "11\n"},
 	}
 	for _, tt := range tests {
-		var stdout string
-		print := func(s string) {
-			stdout += s + "\n"
-		}
-		Print(print, tt.from, tt.to)
-		if got := stdout; got != tt.want {
+		p := &testPrinter{} // same as new(testPrinter)
+		Print(p, tt.from, tt.to)
+		if got := p.stdout; got != tt.want {
 			t.Errorf("Print(print, %v, %v): %q, want %q", tt.from, tt.to, got, tt.want)
 		}
 	}
