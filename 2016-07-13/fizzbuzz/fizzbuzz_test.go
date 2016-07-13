@@ -8,6 +8,8 @@ func TestCheckNumber(t *testing.T) {
 		want     string
 	}{
 		{1, 1, "1\n"},
+		{1, 2, "1\n2\n"},
+		{1, 3, "1\n2\nFizz\n"},
 	}
 	for _, tt := range tests {
 		var stdout string
