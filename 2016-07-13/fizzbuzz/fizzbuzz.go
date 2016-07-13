@@ -1,6 +1,9 @@
-package fizzbuzz
+package main
 
-import "strconv"
+import (
+	"fmt"
+	"strconv"
+)
 
 func Print(print func(string), from, to int) {
 	for n := from; n <= to; n++ {
@@ -16,4 +19,10 @@ func fizzbuzz(n int) string {
 		return "Buzz"
 	}
 	return strconv.Itoa(n)
+}
+
+func main() {
+	Print(func(s string) {
+		fmt.Println(s)
+	}, 1, 100)
 }
