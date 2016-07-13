@@ -1,18 +1,15 @@
 package fizzbuzz
 
-import (
-	"os"
-	"testing"
-)
+import "testing"
 
 func TestCheckNumber(t *testing.T) {
-	Print()
-	var b = make([]byte, 5)
-	if _, err := os.Stdout.Read(b); err != nil {
-		t.Fatalf("First: %v", err)
+	var stdout string
+	print := func(s string) {
+		stdout += s + "\n"
 	}
-	printed1 := string(b[0]) == "1"
-	if !printed1 {
-		t.Errorf("Printed: %q, want: %v", string(b[0]), "1")
+	Print(print)
+	want := "1\n"
+	if got := stdout; got != want {
+		t.Errorf("Print(print): %q, want %q", got, want)
 	}
 }

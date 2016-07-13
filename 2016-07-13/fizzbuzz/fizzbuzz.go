@@ -1,9 +1,5 @@
 package fizzbuzz
 
-import (
-	"fmt"
-)
-
-func Print() {
-	fmt.Print("1")
+func Print(print func(string)) {
+	print("1")
 }
