@@ -1,9 +1,9 @@
 package fizzbuzz
 
-import ("fmt"
+import (
+	"fmt"
 )
 
 func Print() {
-        fmt.Print("1")
-
+	fmt.Print("1")
 }
