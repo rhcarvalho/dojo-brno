@@ -2,40 +2,60 @@ package smartvector
 
 import "testing"
 
-func TestStoreValueAtPositionAndGetItBack(t *testing.T) {
-	v := (*SmartVector).New(nil, 1)
-	v.Set(0, 10)
-	got := v.Get(0)
-	if got != 10 {
-		t.Errorf("Faiiiiiil!!!!")
+func TestSmartVectorSetGet(t *testing.T) {
+	tests := [][]int{ // index, value pairs
+		[]int{
+			0, 10,
+			1, 10,
+		},
+		[]int{
+			1, 5,
+			0, 5,
+		},
+		[]int{
+			0, 10,
+			1, 11,
+			2, 12,
+		},
+	}
+	for _, tt := range tests {
+		v := NewSmartVector(len(tt) / 2)
+		for i := 0; i < len(tt); i += 2 {
+			index, value := tt[i], tt[i+1]
+
+			v.Set(index, value)
+
+			// check immediately after setting
+			if got := v.Get(index); got != value {
+				t.Errorf("v.Get(%d) = %d, want %d\nv = %v", index, got, value, v)
+			}
+		}
+		// check after setting all
+		for i := 0; i < len(tt); i += 2 {
+			index, value := tt[i], tt[i+1]
+
+			if got := v.Get(index); got != value {
+				t.Errorf("v.Get(%d) = %d, want %d\nv = %v", index, got, value, v)
+			}
+		}
 	}
 }
 
-func TestStoreEqualAdjacentValues(t *testing.T) {
-	v := (*SmartVector).New(nil, 2)
-	v.Set(0, 10)
-	v.Set(1, 10)
-	if got := v.Get(0); got != 10 {
-		t.Errorf("v.Get(%v) == %v, want %v", 0, got, 10)
-	}
-	if got := v.Get(1); got != 10 {
-		t.Errorf("v.Get(%v) == %v, want %v", 1, got, 10)
+func TestSmartVectorGetZeroValueEmpty(t *testing.T) {
+	v := NewSmartVector(10)
+	for i := 0; i < 10; i++ {
+		if got := v.Get(i); got != 0 {
+			t.Errorf("v.Get(%d) == %d, want %d", i, got, 0)
+		}
 	}
 }
 
-func TestStoreDifferentAdjacentValues(t *testing.T) {
-	v := (*SmartVector).New(nil, 3)
-	v.Set(0, 10)
-	v.Set(1, 11)
-	v.Set(2, 12)
-	if got := v.Get(0); got != 10 {
-		t.Errorf("v.Get(%v) == %v, want %v", 0, got, 10)
+func TestSmartVectorGetZeroValuePartiallyInitialized(t *testing.T) {
+	v := NewSmartVector(10)
+	v.Set(9, -1)
+	for i := 0; i < 9; i++ {
+		if got := v.Get(i); got != 0 {
+			t.Errorf("v.Get(%d) == %d, want %d", i, got, 0)
+		}
 	}
-	if got := v.Get(1); got != 11 {
-		t.Errorf("v.Get(%v) == %v, want %v", 1, got, 11)
-	}
-	if got := v.Get(2); got != 12 {
-		t.Errorf("v.Get(%v) == %v, want %v", 2, got, 12)
-	}
-
 }
